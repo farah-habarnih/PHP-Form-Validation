@@ -23,16 +23,44 @@
 <body>
 <?php
 
-$userData=array(["username"=>"farah","email"=>"user@gmail.com","password"=>"123698745"]);
+$userInformation=array(["username"=>"farah","email"=>"user@gmail.com","password"=>"123698745"]);
+$emailMsg=$passwordMsg=$matchMsg="";
 
+if(isset($_POST['email'])){
+	$regexEmail='/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/';
+	$regexPass='/^.{8,}$/';
+	$user=array();
+	if(preg_match($regexEmail,$_POST['email'])){
+		$emailMsg='';
+	}
+	else{
+		$emailMsg="Invalid Email";
+	}
 
-
-
-
-
-
-
-
+	if(preg_match($regexPass,$_POST['password'])){
+		if($_POST['password'] === $_POST['repeatPassword']){
+			$matchMsg="Password Matched";
+		}
+		else{
+			$matchMsg="Password Didn't Match";
+		}
+	}
+		else{
+			$passwordMsg="Password should be at least 8 characters";
+		}
+}
+if(preg_match($regex,$_POST['email']) && preg_match($regexPass,$_POST['password']) && $_POST['password']===$_POST['repeatPassword']){
+	$user=array("name"=>$_POST['username'],"email"=>$_POST['email'],"password"=>$_POST['password']);
+	if( $_SESSION['userInformation']){
+		 $lastData=$_SESSION["userInformation"];
+		 array_push($lastData,$user);
+	$_SESSION["userInformation"]=$lastData;
+	}else{
+		array_push($userInformation,$user);
+		$_SESSION["userInformation"]=$userInformation;
+	}
+   
+}
 ?>
 
 <div class="container">
@@ -59,7 +87,7 @@ $userData=array(["username"=>"farah","email"=>"user@gmail.com","password"=>"1236
 							<span class="input-group-text"><i class="fas fa-envelope"></i></span>
 						</div>
 						<input type="email" class="form-control" id="email" name="email" placeholder="email" onchange="emailValidate()" required>
-						<p id="msgEmail"></p>
+						<p id="msgEmail"><?php echo $emailMsg;?></p>
 					</div>
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
@@ -90,6 +118,7 @@ $userData=array(["username"=>"farah","email"=>"user@gmail.com","password"=>"1236
 				</div>
 				<div class="d-flex justify-content-center">
 					<a href="#">Forgot your password?</a>
+					
 				</div>
 			</div>
 		</div>
