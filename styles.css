@@ -50,3 +50,16 @@ button:hover {
 a {
   color: white;
 }
+
+.welcome-container {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  border-radius: 0.5rem;
+  border: 1px solid #79b6c9;
+  background-color: white;
+  padding: 1.5rem;
+}

@@ -27,8 +27,8 @@ $userInformation=array(["username"=>"farah","email"=>"user@gmail.com","password"
 $emailMsg=$passwordMsg=$matchMsg="";
 
 if(isset($_POST['email'])){
-	$regexEmail='/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/';
-	$regexPass='/^.{8,}$/';
+	$regexEmail="/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/";
+	$regexPass="/^.{8,}$/";
 	$user=array();
 	if(preg_match($regexEmail,$_POST['email'])){
 		$emailMsg='';
@@ -49,7 +49,7 @@ if(isset($_POST['email'])){
 			$passwordMsg="Password should be at least 8 characters";
 		}
 }
-if(preg_match($regex,$_POST['email']) && preg_match($regexPass,$_POST['password']) && $_POST['password']===$_POST['repeatPassword']){
+if(preg_match($regexEmail,$_POST['email']) && preg_match($regexPass,$_POST['password']) && $_POST['password']===$_POST['repeatPassword']){
 	$user=array("name"=>$_POST['username'],"email"=>$_POST['email'],"password"=>$_POST['password']);
 	if( $_SESSION['userInformation']){
 		 $lastData=$_SESSION["userInformation"];

@@ -1,8 +1,6 @@
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
-
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,8 +15,37 @@
 
 	<!--Custom styles-->
 	<link rel="stylesheet" type="text/css" href="login.css">
+	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
+	<?php
+
+$emailLoginMsg=$passwordLoginMsg="";
+$_SESSION["passwordEMsg"]="";
+$_SESSION["emailEMsg"]="";
+
+
+if(isset($_POST["email"])){ 
+	$data=$_SESSION['userInformation'];
+	foreach($data as $user){
+		if($user["email"]===$_POST["email"] && $user["password"]===$_POST["password"] ){  
+			 $_SESSION['userName']=$user["name"];
+			 $_SESSION["passwordEMsg"]=" ";
+			 $_SESSION["emailEMsg"]=" ";
+			header('Location: welcome.php'); 
+		}elseif($user["email"]!==$_POST["email"]){
+			$_SESSION["emailEMsg"]="Incorrect Email";
+			$_SESSION["emailEMsg"]=" ";
+		}elseif($user["email"]===$_POST["email"] && $user["password"]!==$_POST["password"]){
+			$_SESSION["passwordEMsg"]="Incorrect password";
+			$_SESSION["emailEMsg"]=" ";
+			break;
+		}
+	}
+}
+?>
 <div class="container">
 	<div class="d-flex justify-content-center h-100">
 		<div class="card1">
@@ -31,20 +58,22 @@
 				</div>
 			</div>
 			<div class="card-body">
-				<form>
+				<form method="post" action="">
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input type="text" class="form-control" placeholder="username">
-						
+						<input type="email" class="form-control" id="email" name="email" placeholder="email" required>
+						<p id="msgError" style="color:red"><?php
+                                 if(isset( $_SESSION["emailEMsg"])) { echo $_SESSION["emailEMsg"]; }else echo ""; ?></p>
 					</div>
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
 						</div>
-						<input type="password" class="form-control" placeholder="password">
-					</div>
+						<input type="password" class="form-control" id="password" name="password" placeholder="password"required>	
+						<p id="msgError" style="color:red"><?php  if(isset( $_SESSION["passwordEMsg"])) {echo $_SESSION["passwordEMsg"]; }else echo "";?></p>		
+						</div>
 					<div class="row align-items-center remember">
 						<input type="checkbox">Remember Me
 					</div>
