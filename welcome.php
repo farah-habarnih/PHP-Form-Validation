@@ -13,8 +13,8 @@
 <body>
     <div class="welcome-container">
     <h1>
-         <?php if(isset($_SESSION['userName'])){
-        echo "Welcome"." ".ucfirst($_SESSION['userName']) ;
+         <?php if(isset($_SESSION['username'])){
+        echo "Welcome"." ".ucfirst($_SESSION['username']) ;
           }     
           else echo "You have to Login first";
         ?>

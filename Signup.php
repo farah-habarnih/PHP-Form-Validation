@@ -22,6 +22,44 @@
 </head>
 <body>
 <?php
+ 
+ $server= "localhost";
+ $serverUsername = "root";
+ $serverPassword = "";
+ 
+ try {
+   $conn = new PDO("mysql:host=$server;dbname=store", $serverUsername, $serverPassword);
+   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+   echo "Connected successfully";
+ } catch(PDOException $e) {
+   echo "Connection failed: " . $e->getMessage();
+ }
+ 
+ if (isset($_POST['signup_user'])) {
+	$username = $_POST['username'];
+	$email = $_POST['email'];
+	$password = $_POST['password'];
+
+	$sql = "INSERT INTO users (username, email, password)
+	VALUES('$username', '$email', '$password')";
+$conn->exec($sql);
+
+$_SESSION['username'] = $username;
+}
+
+// CREATE TABLE users (
+//     ID int NOT NULL PRIMARY KEY,
+//     username varchar(255) NOT NULL,
+//     email varchar(255) NOT NULL,
+//     password varchar(12) NOT NULL,
+// );
+
+// INSERT INTO users (username, email, password)
+// VALUES('$username', '$email', '$password')";
+
+
+
+
 
 $userInformation=array(["username"=>"farah","email"=>"user@gmail.com","password"=>"123698745"]);
 $emailMsg=$passwordMsg=$matchMsg="";
@@ -108,7 +146,7 @@ if(preg_match($regexEmail,$_POST['email']) && preg_match($regexPass,$_POST['pass
 						<input type="checkbox">Remember Me
 					</div>
 					<div class="form-group">
-						<input type="submit" value="Signup" class="btn float-right login_btn">
+						<input type="submit" value="Signup" name="signup_user" class="btn float-right login_btn">
 					</div>
 				</form>
 			</div>

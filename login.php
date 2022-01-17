@@ -21,30 +21,57 @@ session_start();
 </head>
 <body>
 	<?php
+ 
+ $server= "localhost";
+ $serverUsername = "root";
+ $serverPassword = "";
+ 
+ try {
+   $conn = new PDO("mysql:host=$server;dbname=store", $serverUsername, $serverPassword);
+   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+   echo "Connected successfully";
+ } catch(PDOException $e) {
+   echo "Connection failed: " . $e->getMessage();
+ }
+ 
+ if (isset($_POST['login_user'])) {
+	$username = $_POST['username'];
+	$password = $_POST['password'];
 
-$emailLoginMsg=$passwordLoginMsg="";
-$_SESSION["passwordEMsg"]="";
-$_SESSION["emailEMsg"]="";
+	$sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+	$result = $conn->query($sql);
+	if($result->rowCount() ===1){
+	$_SESSION['username'] = $username;
+	header('Location: welcome.php');} 
+ }
 
 
-if(isset($_POST["email"])){ 
-	$data=$_SESSION['userInformation'];
-	foreach($data as $user){
-		if($user["email"]===$_POST["email"] && $user["password"]===$_POST["password"] ){  
-			 $_SESSION['userName']=$user["name"];
-			 $_SESSION["passwordEMsg"]=" ";
-			 $_SESSION["emailEMsg"]=" ";
-			header('Location: welcome.php'); 
-		}elseif($user["email"]!==$_POST["email"]){
-			$_SESSION["emailEMsg"]="Incorrect Email";
-			$_SESSION["emailEMsg"]=" ";
-		}elseif($user["email"]===$_POST["email"] && $user["password"]!==$_POST["password"]){
-			$_SESSION["passwordEMsg"]="Incorrect password";
-			$_SESSION["emailEMsg"]=" ";
-			break;
-		}
-	}
-}
+
+
+
+// $emailLoginMsg=$passwordLoginMsg="";
+// $_SESSION["passwordEMsg"]="";
+// $_SESSION["emailEMsg"]="";
+
+
+// if(isset($_POST["email"])){ 
+// 	$data=$_SESSION['userInformation'];
+// 	foreach($data as $user){
+// 		if($user["email"]===$_POST["email"] && $user["password"]===$_POST["password"] ){  
+// 			 $_SESSION['userName']=$user["name"];
+// 			 $_SESSION["passwordEMsg"]=" ";
+// 			 $_SESSION["emailEMsg"]=" ";
+// 			header('Location: welcome.php'); 
+// 		}elseif($user["email"]!==$_POST["email"]){
+// 			$_SESSION["emailEMsg"]="Incorrect Email";
+// 			$_SESSION["emailEMsg"]=" ";
+// 		}elseif($user["email"]===$_POST["email"] && $user["password"]!==$_POST["password"]){
+// 			$_SESSION["passwordEMsg"]="Incorrect password";
+// 			$_SESSION["emailEMsg"]=" ";
+// 			break;
+// 		}
+// 	}
+// }
 ?>
 <div class="container">
 	<div class="d-flex justify-content-center h-100">
@@ -59,9 +86,15 @@ if(isset($_POST["email"])){
 			</div>
 			<div class="card-body">
 				<form method="post" action="">
+				<div class="input-group form-group">
+				<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+						<input type="text" class="form-control" id="username" name="username" placeholder="username" required>
+					</div>
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
-							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						<span class="input-group-text"><i class="fas fa-envelope"></i></span>
 						</div>
 						<input type="email" class="form-control" id="email" name="email" placeholder="email" required>
 						<p id="msgError" style="color:red"><?php
@@ -78,7 +111,7 @@ if(isset($_POST["email"])){
 						<input type="checkbox">Remember Me
 					</div>
 					<div class="form-group">
-						<input type="submit" value="Login" class="btn float-right login_btn">
+						<input type="submit" value="Login" name="login_user" class="btn float-right login_btn">
 					</div>
 				</form>
 			</div>

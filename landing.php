@@ -8,7 +8,19 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <?php
+$server= "localhost";
+$serverUsername = "root";
+$serverPassword = "";
+
+try {
+  $conn = new PDO("mysql:host=$server;dbname=store", $serverUsername, $serverPassword);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  echo "Connected successfully";
+} catch(PDOException $e) {
+  echo "Connection failed: " . $e->getMessage();
+}
+?>
     <div class="landing-container">
         <h1> Hello There!</h1>
         <p>Welcome to our Website</p>
