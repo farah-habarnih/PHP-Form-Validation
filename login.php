@@ -38,11 +38,16 @@ session_start();
 	$username = $_POST['username'];
 	$password = $_POST['password'];
 
-	$sql = "SELECT * FROM users WHERE username='$username' AND password='$password'";
+	$sql = "SELECT * FROM users WHERE username='$username' AND password='$password' AND is_admin='1'";
 	$result = $conn->query($sql);
 	if($result->rowCount() ===1){
-	$_SESSION['username'] = $username;
-	header('Location: welcome.php');} 
+		header('Location: admin');
+		$_SESSION['username'] = $username;
+	}
+	else{
+		$_SESSION['username'] = $username;
+		header('Location: welcome.php');
+	}
  }
 
 
