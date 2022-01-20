@@ -549,7 +549,7 @@
                       echo "<td>$element[username]</td>";
                       echo "<td>$element[email]</td>";
                       echo "<td>$element[password]</td>";
-                      echo "<td><button class='btn1'>Edit</button></td>";
+                      echo "<td><a href='edit.php?id=$element[id]'>Edit</a></td>";
                       echo "<td><a href='delete.php?id=$element[id]'>Delete</a></td>";
                     }
                     ?>
